@@ -53,7 +53,6 @@ body {
     height: 50px;
 }
 
-/* 緑色の丸い戻るボタン */
 .nav-back {
     display: flex;
     align-items: center;
@@ -89,7 +88,6 @@ body {
     margin-left: 4px;
 }
 
-/* シンプルなグレーのskipボタン */
 .nav-skip {
     position: absolute;
     right: 0;
@@ -108,9 +106,7 @@ body {
     justify-content: center;
 }
 
-.nav-skip:hover {
-    color: #333333;
-}
+.nav-skip:hover { color: #333333; }
 
 .nav-title {
     position: absolute;
@@ -142,9 +138,7 @@ h1 {
     scrollbar-width: none;
     -ms-overflow-style: none;
 }
-.category-slider-wrapper::-webkit-scrollbar {
-    display: none;
-}
+.category-slider-wrapper::-webkit-scrollbar { display: none; }
 
 .category-slider {
     display: flex;
@@ -203,6 +197,7 @@ h1 {
     display: flex; flex-direction: column; align-items: center; 
     cursor: pointer; background: transparent; border: none; padding: 0;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    width: 100%; /* 横幅自動調整 */
 }
 .card:active { transform: none; }
 
@@ -214,14 +209,12 @@ h1 {
 }
 .card-title { font-size: 15px; font-weight: 600; text-align: center; color: #000000; letter-spacing: -0.2px; }
 
-/* カード選択時ハイライト */
 .card.selected .card-img {
     transform: translateY(-10px) scale(1.05);
     box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
     outline: 5px solid var(--blue);
 }
 
-/* 🔒 鍵付きプレミアムカード */
 .card.locked {
     position: relative;
     cursor: pointer;
@@ -246,9 +239,7 @@ h1 {
     box-sizing: border-box;
 }
 
-.card.locked:hover::before {
-    background: rgba(255, 255, 255, 0.2);
-}
+.card.locked:hover::before { background: rgba(255, 255, 255, 0.2); }
 
 .card.locked::after {
     content: '🔒';
@@ -270,12 +261,8 @@ h1 {
     border: 1px solid rgba(164, 132, 149, 0.2);
 }
 
-.card.locked .card-title {
-    color: #555;
-    font-weight: 500;
-}
+.card.locked .card-title { color: #555; font-weight: 500; }
 
-/* カルーセル用インジケーター（ドット） */
 .slider-dots {
     display: flex;
     justify-content: center;
@@ -295,7 +282,6 @@ h1 {
     transform: scale(1.2);
 }
 
-/* カテゴリ確定コンティニューボタン */
 .continue-btn-wrapper {
     display: flex;
     justify-content: center;
@@ -326,12 +312,12 @@ h1 {
 }
 
 /* ─── 📝 ⑤ クイズ画面 ─── */
-.quiz-container { position: relative; }
-.quiz-card { background: var(--card-bg); padding: 32px; border-radius: 32px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); }
+.quiz-container { position: relative; width: 100%; box-sizing: border-box; }
+.quiz-card { background: var(--card-bg); padding: 32px; border-radius: 32px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); box-sizing: border-box; }
 .quiz-image { width: 100%; height: 240px; object-fit: cover; border-radius: 20px; margin-bottom: 32px; background: #eee; }
 .question { font-size: 22px; font-weight: 600; line-height: 1.5; margin-bottom: 32px; letter-spacing: -0.3px; color: #000000; }
 
-#options-container { display: flex; flex-wrap: wrap; gap: 16px; }
+#options-container { display: flex; flex-wrap: wrap; gap: 16px; width: 100%; }
 .option-btn { 
     flex: 1 1 calc(50% - 16px);
     min-height: 90px;
@@ -350,11 +336,11 @@ h1 {
     transition: all 0.3s ease;
     text-align: center;
     word-break: break-all;
+    box-sizing: border-box;
 }
 .option-btn:active:not(:disabled) { transform: scale(0.92); }
 .option-btn.selected { background-color: #5A8FBF !important; }
 
-/* 解答アニメーション演出関連 */
 .option-btn.correct {
     background-color: #4CD964 !important;
     box-shadow: 0 0 20px rgba(76, 217, 100, 0.6) !important;
@@ -373,7 +359,7 @@ h1 {
     pointer-events: none;
 }
 
-/* ─── 💮 ⑥ 解答演出・解説エリア ─── */
+/* ─── 💡 ⑥ 解答演出・解説エリア ─── */
 #feedback-area { display: flex; flex-direction: column; align-items: center; margin-top: 32px; }
 .circle-svg { width: 80px; height: 80px; }
 
@@ -478,19 +464,15 @@ h1 {
 .debug-menu-content { background: white; padding: 20px; border-radius: 16px; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); box-sizing: border-box; }
 .debug-menu-content button { width: 100%; padding: 10px; font-size: 13px; font-weight: bold; background: #54a0ff; color: white; border: none; border-radius: 8px; cursor: pointer; text-align: center; }
 .debug-menu-content button:active { opacity: 0.8; }
-/* ─── リザルト画面・メダルUXアニメーション ─── */
-
-/* ─── 薬玉・紙吹雪だけのUX演出（メダル不要版） ─── */
 
 .celebration-container {
     position: relative;
     width: 100%;
-    height: 150px; /* 紙吹雪が舞うスペース */
+    height: 150px; 
     margin: 0 auto;
     overflow: visible;
 }
 
-/* 周囲に広がる紙吹雪（8方向に配置） */
 .confetti {
     position: absolute;
     width: 14px;
@@ -501,7 +483,6 @@ h1 {
     left: 50%;
 }
 
-/* 各方向へ「パンッ」と飛び散り、少し回転しながら消える */
 .confetti:nth-child(1) { background: #ff4757; animation: burst1 0.8s ease-out forwards; }
 .confetti:nth-child(2) { background: #ffa502; animation: burst2 0.8s ease-out forwards; }
 .confetti:nth-child(3) { background: #2ed573; animation: burst3 0.8s ease-out forwards; }
@@ -516,83 +497,131 @@ h1 {
 @keyframes burst3 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-140px, 10px) rotate(90deg); opacity: 0; } }
 @keyframes burst4 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(140px, 20px) rotate(30deg); opacity: 0; } }
 @keyframes burst5 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-80px, 70px) rotate(60deg); opacity: 0; } }
-@keyframes burst6 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(90px, 60px) rotate(-60deg); opacity: 0; } }
+@keyframes burst6 { 0% { transform: translate(90px, 60px) rotate(-60deg); opacity: 0; } }
 @keyframes burst7 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-30px, -90px) rotate(15deg); opacity: 0; } }
 @keyframes burst8 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(40px, -80px) rotate(120deg); opacity: 0; } }
+
 /* ==========================================
    📱 スマホ専用レスポンシブ調整（横幅480px以下）
    ========================================== */
 @media screen and (max-width: 480px) {
 
-    /* --- 1. アプリ全体の共通調整 --- */
     body {
         padding: 12px;
         box-sizing: border-box;
     }
 
-    /* --- 2. ウェルカム画面の調整 --- */
+    #app {
+        max-width: 100%;
+    }
+
+    /* --- ウェルカム画面の調整 --- */
     #welcome-screen {
-        padding: 24px 16px !important; /* 内側の余白を狭くして縦はみ出しを防ぐ */
+        padding: 24px 16px !important; 
         margin: 10px auto;
+        box-sizing: border-box;
     }
     #welcome-screen img {
-        max-width: 200px !important; /* 画像を少し小さくして文章のスペースを確保 */
+        max-width: 200px !important; 
         margin-bottom: 16px !important;
     }
     #welcome-screen p {
-        font-size: 14px !important; /* 文字をスマホで見やすい最適なサイズに */
+        font-size: 14px !important; 
         margin-bottom: 16px !important;
     }
 
-    /* --- 3. カテゴリ選択画面の調整 --- */
+    /* --- カテゴリ選択画面の調整 --- */
     #category-screen {
-        padding: 10px 8px !important;
+        padding: 10px 4px !important;
+        box-sizing: border-box;
+        width: 100%;
+        overflow: hidden;
+    }
+
+    .category-slider-wrapper {
+        width: 100%;
+    }
+
+    .category-slider {
+        width: 200%; /* 横幅スワイプ設定を維持 */
+    }
+
+    .slider-page {
+        padding: 0 10px !important;
     }
 
     #category-screen h1 {
-        font-size: 1.35rem !important; /* タイトルを1行〜2行に収める */
+        font-size: 1.3rem !important; 
         text-align: center;
         padding: 0 10px;
     }
 
-    /* ★最重要：3列はみ出しを「綺麗な2列」に強制修正 */
+    /* ★最重要：PC用の3列、中央寄せ、固定幅の設定を全リセットして綺麗な2列に */
     .grid {
         display: grid !important;
         grid-template-columns: 1fr 1fr !important; /* 均等に2分割 */
-        gap: 12px !important;                       /* カード同士のすき間 */
+        gap: 24px 12px !important;                  /* カード同士のすき間 */
         width: 100% !important;
         box-sizing: border-box;
         padding: 4px;
+        justify-items: stretch !important;          /* 幅いっぱいに引き伸ばす */
     }
 
-    /* カード単体のリセット */
     .card {
         width: 100% !important;
         max-width: none !important;
         box-sizing: border-box;
         margin: 0 !important;
-        padding: 8px !important;
-        background: #fff;
-        border-radius: 16px;
+        padding: 0 !important;
     }
 
-    /* カードの中の画像（正方形を維持してはみ出さない） */
+    /* PC用の固定幅(120px)を完全に打ち消し、スマホの幅に追従 */
     .card-img {
-        width: 100% !important;
+        width: 100% !important;       /* 固定値を捨てて横幅いっぱい */
         height: auto !important;
-        aspect-ratio: 1 / 1 !important; /* 正方形をキープ */
-        object-fit: cover !important;   /* 画像の歪みを防ぐ */
-        border-radius: 12px !important;
+        max-width: 100% !important;
+        aspect-ratio: 1 / 1 !important; /* 正方形を絶対キープ */
+        object-fit: cover !important;   
+        border-radius: 20px !important; /* 画面に合わせた程よい丸み */
+        margin-bottom: 8px !important;
     }
 
-    /* カテゴリ名の文字サイズ */
     .card-title {
         font-size: 14px !important;
-        margin-top: 6px !important;
         text-align: center;
+        width: 100%;
     }
 
-    /* --- 4. 導入（ローディング）画面の調整 --- */
+    /* 🔒 鍵付きプレミアムカードの位置調整リセット */
+    .card.locked::before {
+        height: 100% !important;
+        aspect-ratio: 1 / 1 !important;
+        border-radius: 20px !important;
+    }
+    .card.locked::after {
+        top: 50% !important;
+    }
+
+    /* --- クイズ画面の調整 --- */
+    .quiz-card {
+        padding: 20px 16px !important;
+    }
+    .quiz-image {
+        height: 180px !important;
+        margin-bottom: 20px !important;
+    }
+    .question {
+        font-size: 18px !important;
+        margin-bottom: 24px !important;
+    }
+    .option-btn {
+        flex: 1 1 100% !important; /* スマホは4択を縦並び(100%)にして押しやすく */
+        min-height: 60px !important;
+        padding: 12px 16px !important;
+        font-size: 16px !important;
+    }
+
+    /* --- 導入（ローディング）画面の調整 --- */
     #loading-screen img {
         width: 85% !important;
         margin-bottom: 20px !important;
@@ -602,14 +631,11 @@ h1 {
         padding: 0 15px !important;
     }
 
-    /* --- 5. クイズ・リザルト画面の調整 --- */
-    .quiz-card {
-        padding: 16px !important;
-    }
-    #question-text {
-        font-size: 16px !important;
-    }
+    /* --- リザルト画面の調整 --- */
     #result-screen .question {
-        font-size: 20px !important;
+        font-size: 18px !important;
+    }
+    .result-image-wrapper {
+        margin-bottom: 16px !important;
     }
 }
