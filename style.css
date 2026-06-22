@@ -519,3 +519,46 @@ h1 {
 @keyframes burst6 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(90px, 60px) rotate(-60deg); opacity: 0; } }
 @keyframes burst7 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-30px, -90px) rotate(15deg); opacity: 0; } }
 @keyframes burst8 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(40px, -80px) rotate(120deg); opacity: 0; } }
+/* --- スマホ用のレスポンシブ調整 --- */
+@media screen and (max-width: 480px) {
+    
+    /* カテゴリ選択の画面全体の調整 */
+    #category-screen {
+        padding: 20px 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh; /* 画面の縦いっぱいに使う */
+    }
+
+    /* 「カテゴリを選んでね」のタイトルの大きさ */
+    #category-screen h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+
+    /* カテゴリボタンが並ぶエリア */
+    .category-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* 横に2個ずつ綺麗に並べる */
+        gap: 12px;                      /* ボタン同士のすき間 */
+        width: 100%;
+        max-width: 340px;               /* スマホの画面幅に収める */
+    }
+
+    /* カテゴリボタン単体の調整 */
+    .category-btn {
+        padding: 15px 10px;
+        font-size: 1rem;
+        border-radius: 12px;
+        text-align: center;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        /* 縦長になりすぎないように調整 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+    }
+}
