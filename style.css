@@ -519,44 +519,97 @@ h1 {
 @keyframes burst6 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(90px, 60px) rotate(-60deg); opacity: 0; } }
 @keyframes burst7 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-30px, -90px) rotate(15deg); opacity: 0; } }
 @keyframes burst8 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(40px, -80px) rotate(120deg); opacity: 0; } }
-/* --- スマホ用のレスポンシブ調整 --- */
+/* ==========================================
+   📱 スマホ専用レスポンシブ調整（横幅480px以下）
+   ========================================== */
 @media screen and (max-width: 480px) {
-    
-    /* 画面全体の左右に余白を作って、はみ出しを防ぐ */
-    #category-screen {
-        padding: 20px 16px;
-        box-sizing: border-box; /* 余白を幅に含める設定 */
+
+    /* --- 1. アプリ全体の共通調整 --- */
+    body {
+        padding: 12px;
+        box-sizing: border-box;
     }
 
-    /* タイトルなどの文字が溢れないように調整 */
-    #category-screen h2 {
-        font-size: 1.4rem;
+    /* --- 2. ウェルカム画面の調整 --- */
+    #welcome-screen {
+        padding: 24px 16px !important; /* 内側の余白を狭くして縦はみ出しを防ぐ */
+        margin: 10px auto;
+    }
+    #welcome-screen img {
+        max-width: 200px !important; /* 画像を少し小さくして文章のスペースを確保 */
+        margin-bottom: 16px !important;
+    }
+    #welcome-screen p {
+        font-size: 14px !important; /* 文字をスマホで見やすい最適なサイズに */
+        margin-bottom: 16px !important;
+    }
+
+    /* --- 3. カテゴリ選択画面の調整 --- */
+    #category-screen {
+        padding: 10px 8px !important;
+    }
+
+    #category-screen h1 {
+        font-size: 1.35rem !important; /* タイトルを1行〜2行に収める */
+        text-align: center;
+        padding: 0 10px;
+    }
+
+    /* ★最重要：3列はみ出しを「綺麗な2列」に強制修正 */
+    .grid {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; /* 均等に2分割 */
+        gap: 12px !important;                       /* カード同士のすき間 */
+        width: 100% !important;
+        box-sizing: border-box;
+        padding: 4px;
+    }
+
+    /* カード単体のリセット */
+    .card {
+        width: 100% !important;
+        max-width: none !important;
+        box-sizing: border-box;
+        margin: 0 !important;
+        padding: 8px !important;
+        background: #fff;
+        border-radius: 16px;
+    }
+
+    /* カードの中の画像（正方形を維持してはみ出さない） */
+    .card-img {
+        width: 100% !important;
+        height: auto !important;
+        aspect-ratio: 1 / 1 !important; /* 正方形をキープ */
+        object-fit: cover !important;   /* 画像の歪みを防ぐ */
+        border-radius: 12px !important;
+    }
+
+    /* カテゴリ名の文字サイズ */
+    .card-title {
+        font-size: 14px !important;
+        margin-top: 6px !important;
         text-align: center;
     }
 
-    /* ★ここが最重要：ボタンが並ぶコンテナの幅を100%にする */
-    .category-container {
-        display: grid;
-        grid-template-columns: 1fr 1fr; /* 均等に2分割 */
-        gap: 16px;                      /* カード同士のすき間 */
-        width: 100%;
-        box-sizing: border-box;
+    /* --- 4. 導入（ローディング）画面の調整 --- */
+    #loading-screen img {
+        width: 85% !important;
+        margin-bottom: 20px !important;
+    }
+    #loading-screen p {
+        font-size: 15px !important;
+        padding: 0 15px !important;
     }
 
-    /* ★各カードが画面幅に合わせて自動縮小するようにする */
-    .category-btn {
-        width: 100% !important;        /* 固定幅を解除して100%に */
-        max-width: none !important;
-        box-sizing: border-box;
-        padding: 10px;
+    /* --- 5. クイズ・リザルト画面の調整 --- */
+    .quiz-card {
+        padding: 16px !important;
     }
-
-    /* カードの中の画像も親の幅（100%）に強制的に合わせる */
-    .category-btn img {
-        width: 100%;
-        height: auto;
-        aspect-ratio: 1 / 1;          /* 正方形をキープ */
-        object-fit: cover;            /* 画像が歪まないように切り抜き */
-        border-radius: 20px;          /* 丸みをキープ */
+    #question-text {
+        font-size: 16px !important;
+    }
+    #result-screen .question {
+        font-size: 20px !important;
     }
 }
