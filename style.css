@@ -522,43 +522,41 @@ h1 {
 /* --- スマホ用のレスポンシブ調整 --- */
 @media screen and (max-width: 480px) {
     
-    /* カテゴリ選択の画面全体の調整 */
+    /* 画面全体の左右に余白を作って、はみ出しを防ぐ */
     #category-screen {
-        padding: 20px 15px;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        min-height: 100vh; /* 画面の縦いっぱいに使う */
+        padding: 20px 16px;
+        box-sizing: border-box; /* 余白を幅に含める設定 */
     }
 
-    /* 「カテゴリを選んでね」のタイトルの大きさ */
+    /* タイトルなどの文字が溢れないように調整 */
     #category-screen h2 {
-        font-size: 1.5rem;
-        margin-bottom: 20px;
+        font-size: 1.4rem;
         text-align: center;
     }
 
-    /* カテゴリボタンが並ぶエリア */
+    /* ★ここが最重要：ボタンが並ぶコンテナの幅を100%にする */
     .category-container {
         display: grid;
-        grid-template-columns: 1fr 1fr; /* 横に2個ずつ綺麗に並べる */
-        gap: 12px;                      /* ボタン同士のすき間 */
+        grid-template-columns: 1fr 1fr; /* 均等に2分割 */
+        gap: 16px;                      /* カード同士のすき間 */
         width: 100%;
-        max-width: 340px;               /* スマホの画面幅に収める */
+        box-sizing: border-box;
     }
 
-    /* カテゴリボタン単体の調整 */
+    /* ★各カードが画面幅に合わせて自動縮小するようにする */
     .category-btn {
-        padding: 15px 10px;
-        font-size: 1rem;
-        border-radius: 12px;
-        text-align: center;
-        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-        /* 縦長になりすぎないように調整 */
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
+        width: 100% !important;        /* 固定幅を解除して100%に */
+        max-width: none !important;
+        box-sizing: border-box;
+        padding: 10px;
+    }
+
+    /* カードの中の画像も親の幅（100%）に強制的に合わせる */
+    .category-btn img {
+        width: 100%;
+        height: auto;
+        aspect-ratio: 1 / 1;          /* 正方形をキープ */
+        object-fit: cover;            /* 画像が歪まないように切り抜き */
+        border-radius: 20px;          /* 丸みをキープ */
     }
 }
