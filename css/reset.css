@@ -1,0 +1,27 @@
+:root {
+    --bg: #F2F2F7;
+    --text: #000000;
+    --blue: #84A495;
+    --card-bg: #FFFFFF;
+    --btn-border: rgba(0, 0, 0, 0.05);
+    --accent-green: #84A495;
+    --main-green: #84A495;
+}
+
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Icons", "Helvetica Neue", Helvetica, Arial, "Hiragino Kaku Gothic ProN", "ヒラギノ 角ゴ ProN W3", Meiryo, sans-serif;
+    background-color: var(--bg);
+    color: #000000;
+    display: flex;
+    justify-content: center;
+    min-height: 100vh;
+    box-sizing: border-box;
+}
+
+#app {
+    width: 100%;
+    max-width: 450px;
+    box-sizing: border-box;
+}

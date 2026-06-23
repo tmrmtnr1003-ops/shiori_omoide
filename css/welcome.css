@@ -1,0 +1,30 @@
+/* ─── 🎬 スプラッシュスクリーン（起動時に絶対一番上にする） ─── */
+.splash-screen {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: #FFFFFF; display: flex; flex-direction: column;
+    justify-content: center; align-items: center; 
+    z-index: 20000; /* 頂点 */
+    transition: opacity 0.5s ease;
+}
+.splash-logo { width: 150px; height: auto; margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+    100% { transform: translateY(0px); }
+}
+
+/* ─── 🏠 導入（ウェルカム）画面のPC基本設定 ─── */
+#welcome-screen {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    z-index: 10000; /* スプラッシュの次、カテゴリよりは上 */
+}
+/* JSでhiddenが付与されたら奈落の底に落として裏画面を出す */
+#welcome-screen.hidden {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    z-index: -1 !important;
+    pointer-events: none !important;
+}

@@ -1,0 +1,493 @@
+/* ─── 💻 全サイズ共通（PC・スマホ両方）の設定 ─── */
+#splash-screen p,
+#loading-screen p,
+#welcome-screen p {
+    color: #666666 !important; /* 画面サイズに関関係なく文字色をグレーに統一 */
+}
+
+/* 導入（ローディング）画面の画像に、ロード中を表す明滅グラデーションをかける */
+#loading-screen img {
+    animation: loadingPulse 4s ease-in-out infinite alternate;
+}
+
+@keyframes loadingPulse {
+    0% { opacity: 0.3; }
+    100% { opacity: 1; }
+}
+
+
+/* ─── 📱 ここから下はスマホ専用（480px以下）のレイアウト調整 ─── */
+@media screen and (max-width: 480px) {
+
+    /* ─── 🚨【影と枠線のノイズを完全抹殺】 ─── */
+    /* クイズ画面内の全要素の不要な影・枠線をゼロにします */
+    #quiz-screen,
+    #quiz-screen * {
+        border: none;
+        box-shadow: none !important;
+        -webkit-box-shadow: none !important;
+    }
+
+    /* 🏹【矢印の形状・線を強制復活】 */
+    #quiz-screen .nav-back-arrow,
+    .nav-back-arrow {
+        border-top: 2px solid #84A495 !important;   
+        border-left: 2px solid #84A495 !important;  
+        border-bottom: none !important;
+        border-right: none !important;
+        display: inline-block !important;
+        width: 10px !important;           
+        height: 10px !important;          
+        transform: rotate(-45deg) !important;
+        @media screen and (max-width: 480px) {
+    /* 1. 正解後のフィードバックエリアの上下マージンを最小化する */
+    #quiz-screen #feedback-area {
+        margin: 5px auto 10px auto !important; /* 上下余白を削る */
+        width: 12vw !important;                /* 少しコンパクトにする */
+        height: 12vw !important;
+    }
+
+    /* 2. 問いかけ文（解説文）の余白を調整 */
+    #quiz-screen #guide-text {
+        margin: 5px 0 !important;              /* 不要な上下マージンをカット */
+        font-size: 3.8vw !important;           /* スマホで見やすいサイズに調整 */
+    }
+
+    /* 3. 次へボタンエリアの上下調整 */
+    #quiz-screen #next-btn-wrapper {
+        margin-top: 5px !important;            /* 上の余白を詰める */
+    }
+
+    /* 4. クイズカード内のコンテンツ全体の並びを調整 */
+    #quiz-screen .quiz-card {
+        padding-top: 60px !important;          /* ヘッダー分を確保しつつ全体のスタート位置を維持 */
+        gap: 5px !important;                   /* 要素同士の間隔を少し詰める */
+    }
+}
+    }
+
+    /* 裏の画面（#appや他の画面）の影や枠線も、クイズ中は完全遮断 */
+    body:has(#quiz-screen:not(.hidden)) #app,
+    body:has(#quiz-screen:not(.hidden)) #welcome-screen,
+    body:has(#quiz-screen:not(.hidden)) #category-screen {
+        border: none !important;
+        box-shadow: none !important;
+        background: transparent !important;
+    }
+
+    /* 万が一 hr タグ（水平線）が紛れ込んでいた場合は存在ごと消滅 */
+    #quiz-screen hr {
+        display: none !important;
+        height: 0 !important;
+        opacity: 0 !important;
+        visibility: hidden !important;
+    }
+
+    /* ─── 📱 【最重要】上部ナビゲーションエリア（位置と文字配置）の完全同期 ─── */
+
+    /* 🎯 クイズ画面の上部バー全体をカテゴリ画面（16pxの余白）と完全に同期させる */
+    #quiz-screen .nav-bar {
+        position: absolute !important;
+        top: 16px !important;
+        left: 16px !important;
+        right: 16px !important;
+        width: calc(100% - 32px) !important;
+        height: 34px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: space-between !important; /* 両端と中央に綺麗に分散 */
+        margin: 0 !important;
+        padding: 0 !important;
+        z-index: 5010 !important;
+    }
+
+    /* タイトル（「動物」など）が左上にめり込まないよう、中央配置に固定 */
+    #quiz-screen h1,
+    #quiz-screen .nav-bar h1 {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        margin: 0 !important;
+        font-size: 18px !important;
+        font-weight: bold !important;
+        color: #333333 !important;
+        white-space: nowrap !important;
+        z-index: 5005 !important;
+    }
+
+    /* ボタン単体での位置固定を解除し、.nav-barの並びルールに従わせる */
+    #quiz-screen .nav-back {
+        position: relative !important;
+        top: 24px !important;
+        left: auto !important;
+        margin: 0 !important;
+    }
+
+    /* 戻るボタンの外枠サイズをスマートに固定 */
+    .nav-bar button.nav-back,
+    .nav-back {
+        width: 34px !important;           
+        height: 34px !important;          
+        min-height: 34px !important;      
+        padding: 0 !important;            
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        background-color: rgba(132, 164, 149, 0.15) !important; /* 薄い緑の背景 */
+        border-radius: 50% !important;
+        border: none !important;
+        z-index: 5015 !important;
+    }
+
+    /* ─── 📱 各画面の細かな余白調整 ─── */
+
+    /* 戻るボタンはそのままで、下のコンテンツ一式を上に引き上げる設定 */
+    #category-screen .category-slider-wrapper {
+        margin-top: -20px !important;    
+    }
+
+    /* ① 一番最初のスプラッシュ画面 */
+    #splash-screen img {
+        margin-bottom: 20px !important; 
+        max-width: 200px !important;    
+    }
+    #splash-screen p {
+        font-size: 15px !important;    
+        line-height: 1.5 !important;
+        padding: 0 10px !important;
+    }
+
+    /* ② 導入（ローディング）画面 */
+    #loading-screen img {
+        margin-bottom: 20px !important; 
+        width: 85% !important;          
+    }
+    #loading-screen p {
+        font-size: 14px !important;    
+        line-height: 1.5 !important;
+        padding: 0 20px !important;    
+    }
+
+    /* ③ ウェルカム画面 */
+    #welcome-screen img {
+        margin-bottom: 16px !important; 
+        max-width: 220px !important;    
+    }
+    #welcome-screen p {
+        font-size: 13px !important;    
+        line-height: 1.5 !important;
+        text-align: left !important;   
+        margin-bottom: 16px !important; 
+    }
+    #welcome-screen button,
+    #welcome-screen .start-btn {
+        font-size: 15px !important;       
+        padding: 10px 24px !important;    
+        max-width: 180px !important;      
+        width: 100% !important;
+        min-height: 42px !important;      
+        margin: 0 auto !important;        
+    }
+
+    /* ─── 📱 カテゴリ選択画面のレスポンシブ ─── */
+    
+    #category-screen h1 {
+        font-size: 4.5vw !important;  
+        color: #84A495 !important;
+        text-align: center !important;
+        white-space: nowrap !important; 
+        margin-top: 10px !important;
+        margin-bottom: 8px !important;
+    }
+
+    #category-screen header p {
+        font-size: 12px !important;     
+        margin-top: -2px !important;    
+        margin-bottom: 4px !important;  
+        text-align: center !important;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, 1fr) !important; 
+        gap: 4vw 3vw !important; 
+        width: 100% !important;
+    }
+
+    .card {
+        width: 100% !important;
+    }
+
+    .card-img {
+        width: 24vw !important; 
+        height: 24vw !important; 
+        max-width: 100% !important;
+        object-fit: cover !important;
+        border-radius: 4vw !important; 
+        margin-bottom: 8px !important;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.08) !important;
+    }
+
+    .card-title {
+        font-size: 3.5vw !important; 
+        width: 100%;
+    }
+
+    .card.locked::before {
+        width: 24vw !important;
+        height: 24vw !important;
+        border-radius: 4vw !important;
+    }
+    .card.locked::after {
+        top: 12vw !important; 
+        width: 7vw !important;
+        height: 7vw !important;
+        font-size: 3.5vw !important;
+    }
+
+    /* ─── 📱 クイズ画面のレスポンシブ ─── */
+
+    #quiz-screen {
+        position: fixed !important; 
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        z-index: 5000 !important; 
+        background-color: #f8f8f9 !important; 
+        box-sizing: border-box !important;
+    }
+    #quiz-screen.hidden {
+        display: none !important;
+        z-index: -1 !important;
+    }
+    
+    /* 修正場所1：カード自体の余白設定 */
+    #quiz-screen .quiz-card {
+        padding: 60px 4vw 4vw 4vw !important;
+        background: transparent !important;
+        box-shadow: none !important;
+        height: auto !important;
+        max-height: 85vh !important;
+        overflow-y: auto !important;
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        gap: 0 !important; /* gapを削除してレイアウト崩れを防止 */
+    }
+
+    #quiz-screen .quiz-image {
+        width: 100% !important;
+        height: 18vh !important; 
+        max-height: 130px !important; 
+        object-fit: cover !important;
+        border-radius: 20px !important;
+        margin-bottom: 3vw !important;
+    }
+
+    #quiz-screen .question {
+        font-size: 4.5vw !important; 
+        line-height: 1.4 !important;
+        margin-bottom: 4vw !important;
+        text-align: center !important;
+        width: 100% !important;
+    }
+    
+    #quiz-screen #options-container {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important; 
+        gap: 2.5vw !important; 
+        width: 100% !important;
+    }
+
+    #quiz-screen .option-btn {
+        flex: none !important;
+        width: 100% !important; 
+        min-height: 6vh !important; 
+        padding: 2vw !important;
+        font-size: 3.6vw !important; 
+        border-radius: 14px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 1px solid rgba(0,0,0,0.1) !important;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05) !important;
+    }
+
+    /* ─── 正解後のエリアの余白を詰める修正 ─── */
+    #quiz-screen #feedback-area {
+        display: none !important;      
+        position: relative !important;
+        width: 14vw !important;         
+        height: 14vw !important;
+        /* 追加・変更：要素の上下のマージンをリセットし、下側だけ少し確保 */
+        margin: 0 auto 5px auto !important;
+    }
+    #quiz-screen #feedback-area:not(.hidden) {
+        display: block !important;     
+    }
+    #quiz-screen #feedback-area:not(.hidden) {
+        display: block !important;     
+    }
+    
+    #quiz-screen .circle-svg {
+        width: 100% !important; 
+        height: 100% !important;
+        display: block !important;
+    }
+    
+    #quiz-screen .checkmark-icon {
+        position: absolute !important;
+        top: 50% !important;
+        left: 50% !important;
+        width: 7vw !important;
+        height: 7vw !important;
+        margin: 0 !important;
+        transform: translate(-50%, -50%) !important;
+        z-index: 10 !important;
+        opacity: 0 !important;         
+        transition: opacity 0.3s ease !important;
+    }
+    #quiz-screen .checkmark-icon.show-check {
+        opacity: 1 !important;         
+    }
+
+    #quiz-screen #next-btn-wrapper {
+        position: relative !important;
+        transform: none !important;
+        margin-top: 3vw !important;      
+        width: 100% !important;
+        display: none !important;        
+        flex-direction: column !important; 
+        align-items: center !important;
+    }
+    #quiz-screen #next-btn-wrapper.show-next {
+        display: flex !important;        
+    }
+    
+    #quiz-screen #next-btn-wrapper p, 
+    #quiz-screen [id*="commentary"],
+    #quiz-screen #guide-text { 
+        font-size: 4vw !important; 
+        line-height: 1.4 !important;
+        margin: 0 0 4vw 0 !important;  
+        text-align: center !important;
+        color: #555555 !important;
+        width: 100% !important;
+    }
+    
+    #quiz-screen #next-btn-wrapper button,
+    #quiz-screen .continue-btn {
+        width: 100% !important;
+        max-width: 260px !important;    
+        min-height: 48px !important;     
+        font-size: 16px !important;
+        margin: 0 auto !important;
+    }
+    /* ─── 💡 余白削除の決定版（既存設定を上書き） ─── */
+
+    /* 1. 解説文エリアが正解直後に出る際のマージンを強制的に削る */
+    #quiz-screen #guide-text {
+        margin: 0 !important; 
+        padding: 5px 0 !important;
+    }
+
+    /* 2. 「次へ」ボタンエリアの上部マージンを強制的に削る */
+    #quiz-screen #next-btn-wrapper {
+        margin-top: 5px !important;
+    }
+
+    /* 3. 重複してかかっているマージンを打ち消すための個別対応 */
+    #quiz-screen .quiz-card > *:last-child {
+        margin-bottom: 0 !important;
+    }
+    /* ─── クイズ画面の正解後の余白を消す専用修正（responsive.cssの最後に追加） ─── */
+
+@media screen and (max-width: 480px) {
+    /* 1. 正解後に表示されるエリアのマージンをリセット */
+    #quiz-screen #feedback-area {
+        margin: 0 auto !important; /* 左右中央、上下なし */
+        padding: 5px 0 !important; /* 最小限の上下のみ確保 */
+    }
+
+    /* 2. 解説文の不要なマージンをリセット */
+    #quiz-screen #guide-text {
+        margin-top: 5px !important;
+        margin-bottom: 5px !important;
+    }
+
+    /* 3. 「次へ」ボタンエリアの余白をリセット */
+    #quiz-screen #next-btn-wrapper {
+        margin-top: 5px !important;
+    }
+}
+/* 正解後に選択肢コンテナが非表示になったら、その親の隙間を詰める */
+@media screen and (max-width: 480px) {
+    /* 選択肢が入っていたエリア(#interactive-area)が空になったら、そのエリア自体の高さをゼロにする */
+    #quiz-screen #interactive-area:has(#options-container.hidden) {
+        height: 0 !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+    }
+
+    /* 解説文が選択肢のすぐ下にくるよう、上部マージンを最小化 */
+    #quiz-screen #guide-text {
+        margin-top: 10px !important; 
+        margin-bottom: 10px !important;
+    }
+}
+@media screen and (max-width: 480px) {
+    /* 1. 丸とボタンを横並びにする親コンテナの調整 */
+    .quiz-card {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+    }
+
+    /* 2. 丸とボタンを並べるためのラッパーを作る（Flexbox） */
+    #quiz-screen #feedback-area {
+        display: none !important; /* 初期値 */
+        margin: 10px auto !important;
+    }
+    #quiz-screen #feedback-area:not(.hidden) {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 15px !important;
+    }
+
+    /* 3. ボタンの配置を強制リセット */
+    #quiz-screen #next-btn-wrapper {
+        display: none !important;
+        position: static !important;
+    }
+    #quiz-screen #next-btn-wrapper.show-next {
+        display: flex !important;
+    }
+    
+    /* 4. ボタンのサイズ調整 */
+    #quiz-screen #next-btn-wrapper button {
+        width: 80px !important;
+        padding: 5px 10px !important;
+        font-size: 13px !important;
+        min-height: 35px !important;
+    }
+}
+@media screen and (max-width: 480px) {
+    /* リザルト画面のボタンコンテナとボタン自体のサイズ調整 */
+    #result-screen .option-btn {
+        padding: 12px 16px !important; /* ボタンの余白を縮める */
+        font-size: 14px !important;    /* 文字サイズを少し小さく */
+        min-height: 45px !important;   /* 高さを抑える */
+        max-width: 240px !important;   /* ボタンの横幅を少し狭める */
+        margin: 0 auto !important;
+    }
+    
+    /* ボタン同士の間隔も少し狭める */
+    #result-screen > div[style*="display: flex"] {
+        gap: 6px !important;
+    }
+}
+}

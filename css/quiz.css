@@ -1,0 +1,154 @@
+/* ─── 📝 ⑤ クイズ画面 ─── */
+.quiz-container { position: relative; width: 100%; box-sizing: border-box; }
+.quiz-card { background: var(--card-bg); padding: 32px; border-radius: 32px; box-shadow: 0 8px 24px rgba(0,0,0,0.04); box-sizing: border-box; width: 100%; }
+.quiz-image { width: 100%; height: 240px; object-fit: cover; border-radius: 20px; margin-bottom: 32px; background: #eee; }
+.question { font-size: 22px; font-weight: 600; line-height: 1.5; margin-bottom: 32px; letter-spacing: -0.3px; color: #000000; }
+
+#options-container { display: flex; flex-wrap: wrap; gap: 16px; width: 100%; box-sizing: border-box; }
+.option-btn { 
+    flex: 1 1 calc(50% - 16px);
+    min-height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #6B8E23; 
+    border: none; 
+    border-radius: 20px; 
+    font-size: 18px; 
+    font-weight: 600; 
+    color: #FFFFFF;
+    cursor: pointer; 
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(107, 142, 35, 0.2);
+    transition: all 0.3s ease;
+    text-align: center;
+    word-break: break-all;
+    box-sizing: border-box;
+}
+.option-btn:active:not(:disabled) { transform: scale(0.92); }
+.option-btn.selected { background-color: #5A8FBF !important; }
+
+.option-btn.correct {
+    background-color: #4CD964 !important;
+    box-shadow: 0 0 20px rgba(76, 217, 100, 0.6) !important;
+    color: #FFFFFF !important;
+    transform: scale(1.03);
+    z-index: 2;
+}
+.option-btn.disappeared {
+    opacity: 0.15;
+    transform: scale(0.95);
+    cursor: not-allowed;
+}
+.option-btn.fade-out {
+    opacity: 0 !important;
+    transition: opacity 1.0s ease-out !important;
+    pointer-events: none;
+}
+
+/* ─── 💡 ⑥ 解答演出・解説エリア ─── */
+#feedback-area { display: flex; flex-direction: column; align-items: center; margin-top: 32px; width: 100%; }
+.circle-svg { width: 80px; height: 80px; }
+
+#circle-path {
+    fill: none;               
+    stroke: #84A495;          
+    stroke-width: 4;          
+    stroke-linecap: round;    
+    stroke-dasharray: 1000;
+    stroke-dashoffset: 1000;
+    animation: drawCircle 1.0s forwards linear;
+}
+@keyframes drawCircle { to { stroke-dashoffset: 0; } }
+
+#checkmark { opacity: 0; transition: opacity 1.0s ease-in-out; }
+#checkmark.show-check { opacity: 1 !important; }
+.checkmark-icon { width: 40px; height: 40px; color: #6B8E23; margin-top: -60px; opacity: 0; transition: opacity 0.3s ease; }
+
+#next-btn-wrapper {
+    width: 100%;
+    margin-top: 20px;
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+    pointer-events: none;
+}
+#next-btn-wrapper.show-next { opacity: 1 !important; pointer-events: auto; }
+
+/* ─── 🏆 ⑦ 結果画面 ─── */
+/* css/quiz.css の #result-screen 部分 */
+#result-screen {
+    position: relative;
+    min-height: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    box-sizing: border-box;
+    padding: 60px 20px; /* 上部にしっかり余白をとる */
+    width: 100%;
+}
+
+/* ボタンコンテナにデフォルトの余白を追加 */
+#result-screen > div[style*="display: flex"] {
+    margin-top: 60px !important; /* PCでは文字とボタンの間に40pxの隙間を作る */
+}
+.result-image-wrapper {
+    width: 90%;
+    max-width: 340px;
+    aspect-ratio: 4 / 3;
+    margin: 0 auto 32px auto;
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+}
+#result-image { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; }
+
+#result-screen button,
+#result-screen .continue-btn,
+#result-screen .home-btn,
+#result-screen .continue-btn-wrapper {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 300px;
+    margin: 0 auto;
+}
+
+/* ─── 🎉 紙吹雪の演出 ─── */
+.celebration-container {
+    position: relative;
+    width: 100%;
+    height: 150px; 
+    margin: 0 auto;
+    overflow: visible;
+}
+
+.confetti {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border-radius: 2px;
+    opacity: 0;
+    top: 50%;
+    left: 50%;
+}
+
+.confetti:nth-child(1) { background: #ff4757; animation: burst1 0.8s ease-out forwards; }
+.confetti:nth-child(2) { background: #ffa502; animation: burst2 0.8s ease-out forwards; }
+.confetti:nth-child(3) { background: #2ed573; animation: burst3 0.8s ease-out forwards; }
+.confetti:nth-child(4) { background: #1e90ff; animation: burst4 0.8s ease-out forwards; }
+.confetti:nth-child(5) { background: #9b59b6; animation: burst5 0.8s ease-out forwards; }
+.confetti:nth-child(6) { background: #ff6b81; animation: burst6 0.8s ease-out forwards; }
+.confetti:nth-child(7) { background: #7bed9f; animation: burst7 0.8s ease-out forwards; }
+.confetti:nth-child(8) { background: #70a1ff; animation: burst8 0.8s ease-out forwards; }
+
+@keyframes burst1 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-120px, -60px) rotate(45deg); opacity: 0; } }
+@keyframes burst2 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(120px, -50px) rotate(-45deg); opacity: 0; } }
+@keyframes burst3 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-140px, 10px) rotate(90deg); opacity: 0; } }
+@keyframes burst4 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(140px, 20px) rotate(30deg); opacity: 0; } }
+@keyframes burst5 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-80px, 70px) rotate(60deg); opacity: 0; } }
+@keyframes burst6 { 0% { transform: translate(90px, 60px) rotate(-60deg); opacity: 0; } }
+@keyframes burst7 { 0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; } 100% { transform: translate(-30px, -90px) rotate(15deg); opacity: 0; } }
+@keyframes burst8 { 0% { transform: translate(40px, -80px) rotate(120deg); opacity: 0; } }

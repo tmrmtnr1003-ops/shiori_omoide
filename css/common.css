@@ -1,0 +1,184 @@
+/* ─── ✨ 画面遷移・共通アニメーション ─── */
+.fade { opacity: 0; transition: opacity 0.5s ease; }
+.fade.show { opacity: 1; }
+.fade-out { opacity: 0; transition: opacity 0.5s ease; }
+.hidden { display: none !important; }
+
+/* ─── 🧭 ナビゲーションバー・ヘッダー ─── */
+.nav-bar {
+    position: relative;
+    padding: 15px 0;
+    margin-bottom: 20px;
+    height: 50px;
+    box-sizing: border-box;
+}
+
+.nav-back {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--blue);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    cursor: pointer;
+    user-select: none;
+    transition: all 0.5s ease;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding: 0;
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.nav-back:active {
+    transform: translateY(-50%) scale(0.95);
+    opacity: 0.8;
+}
+
+.nav-back-arrow {
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-top: 3px solid #FFFFFF;
+    border-left: 3px solid #FFFFFF;
+    transform: rotate(-45deg);
+    margin-left: 4px;
+}
+
+.nav-skip {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    color: #888888;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-skip:hover { color: #333333; }
+
+.nav-title {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 17px;
+    font-weight: 600;
+    margin: 0;
+    white-space: nowrap;
+}
+
+header {
+    text-align: center;
+    margin: 20px 0 35px;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0;
+}
+
+.continue-btn-wrapper {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
+    padding-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.continue-btn {
+    width: 100%;
+    max-width: 300px;
+    min-height: 60px;
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    background-color: var(--blue);
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.continue-btn:active { transform: scale(0.95); }
+.continue-btn:disabled {
+    background-color: #AEAEB2;
+    box-shadow: none;
+    cursor: not-allowed;
+    opacity: 0.6;
+    transform: none;
+}
+
+/* ─── 💎 ⑧ プレミアムポップアップ ─── */
+.modal-overlay {
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); display: flex;
+    justify-content: center; align-items: center; z-index: 10000;
+    opacity: 0; transition: opacity 0.3s ease;
+}
+.modal-overlay:not(.hidden) { opacity: 1; }
+.modal-content {
+    background-color: #ffffff; width: 90%; max-width: 400px; border-radius: 28px; padding: 24px;
+    box-sizing: border-box; text-align: center; box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+    transform: scale(0.9); transition: transform 0.3s ease;
+}
+.modal-overlay:not(.hidden) .modal-content { transform: scale(1); }
+.modal-header { display: flex; justify-content: flex-end; }
+.modal-close { font-size: 28px; font-weight: bold; color: #aaa; cursor: pointer; line-height: 1; }
+.modal-close:hover { color: #333; }
+.premium-badge { display: inline-block; background: #A48495; color: white; font-size: 12px; font-weight: bold; padding: 4px 12px; border-radius: 12px; margin-bottom: 12px; }
+.modal-body h2 { font-size: 22px; color: #333; margin: 0 0 12px 0; }
+.premium-desc { font-size: 14px; color: #666; line-height: 1.6; margin-bottom: 24px; text-align: left; }
+.premium-price-box { background-color: #F9F9FB; border: 2px solid #E4E4E7; border-radius: 16px; padding: 16px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: center; }
+.price-title { font-size: 16px; font-weight: 600; color: #333; }
+.price-amount { font-size: 24px; font-weight: 700; color: #A48495; }
+.price-tax { font-size: 12px; color: #666; font-weight: normal; }
+.premium-buy-btn { background-color: #A48495; color: white; border: none; font-size: 18px; font-weight: 600; width: 100%; padding: 16px; border-radius: 24px; cursor: pointer; margin-bottom: 12px; box-shadow: 0 4px 12px rgba(164, 132, 149, 0.2); }
+.premium-cancel-btn { background: none; border: none; color: #888; font-size: 14px; cursor: pointer; width: 100%; padding: 8px; }
+
+/* ─── ⚙️ ⑨ 隠しデバッグメニュー ─── */
+#debug-toggle {
+    position: fixed; top: 12px; right: 12px; z-index: 99999;
+    background: rgba(0, 0, 0, 0.7); color: white; width: 36px; height: 36px;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 18px; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+}
+#debug-menu-overlay {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: rgba(0, 0, 0, 0.5); z-index: 99998; display: flex;
+    align-items: center; justify-content: center;
+}
+.debug-menu-content { background: white; padding: 20px; border-radius: 16px; width: 85%; max-width: 320px; box-shadow: 0 10px 25px rgba(0,0,0,0.3); box-sizing: border-box; }
+.debug-menu-content button { width: 100%; padding: 10px; font-size: 13px; font-weight: bold; background: #54a0ff; color: white; border: none; border-radius: 8px; cursor: pointer; text-align: center; }
+.debug-menu-content button:active { opacity: 0.8; }
+/* ─── リザルト画面のボタン余白を強制リセット ─── */
+#result-screen {
+    /* 画面上部のパディングを最小化 */
+    padding-top: 10px !important; 
+}
+
+#result-screen > div[style*="display: flex"] {
+    /* ボタンを囲む枠の余白を強制的に消去 */
+    margin-top: 5px !important;
+    gap: 8px !important;
+}
+
+#result-screen .option-btn {
+    /* ボタンそのものの外側余白をゼロに */
+    margin: 0 !important;
+    /* ボタンのクリックエリアを確保しつつ、余白を調整 */
+    padding: 16px 20px !important;
+}
