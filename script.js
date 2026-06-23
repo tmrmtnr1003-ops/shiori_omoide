@@ -1,12 +1,26 @@
+// ─── ⏱️ 裏で動くタイマーを管理する変数（バッティング防止用） ───
+let appTimeouts = [];
+
+// 安全にsetTimeoutを呼び出し、管理リストに登録する共通関数
+function safeSetTimeout(callback, delay) {
+    const id = setTimeout(() => {
+        // 実行されたらリストから削除
+        appTimeouts = appTimeouts.filter(tId => tId !== id);
+        callback();
+    }, delay);
+    appTimeouts.push(id);
+    return id;
+}
+
 window.onload = function() {
     // ─── ① 起動時：スプラッシュ画面を6秒表示したあと、ウェルカム画面へ自動遷移 ───
-    setTimeout(function() {
+    safeSetTimeout(function() {
         const splash = document.getElementById('splash-screen');
         const welcome = document.getElementById('welcome-screen');
         
         if (splash) {
             splash.style.opacity = '0'; // フェードアウト
-            setTimeout(function() { 
+            safeSetTimeout(function() { 
                 splash.style.display = 'none'; 
                 splash.classList.add('hidden');
                 
@@ -14,7 +28,7 @@ window.onload = function() {
                 if (welcome) {
                     welcome.style.display = 'block';
                     welcome.classList.remove('hidden');
-                    setTimeout(() => welcome.classList.add('show'), 10);
+                    safeSetTimeout(() => welcome.classList.add('show'), 10);
                 }
             }, 500);
         }
@@ -28,6 +42,10 @@ function toggleDebugMenu() {
 }
 
 function clearAllScreens() {
+    // 🔥【超重要】裏でカウントダウン中のタイマーをすべて強制停止してバッティングを阻止！
+    appTimeouts.forEach(id => clearTimeout(id));
+    appTimeouts = []; // リストを空にする
+
     // すべての画面の状態（クラス・スタイル）を一斉に完全に初期化する
     const screens = ['splash-screen', 'loading-screen', 'welcome-screen', 'category-screen', 'quiz-screen', 'result-screen'];
     screens.forEach(id => {
@@ -39,7 +57,8 @@ function clearAllScreens() {
             el.classList.add('hidden');
         }
     });
-    document.getElementById('premium-modal').classList.add('hidden');
+    const premiumModal = document.getElementById('premium-modal');
+    if (premiumModal) premiumModal.classList.add('hidden');
 }
 
 function debugJump(target) {
@@ -50,17 +69,17 @@ function debugJump(target) {
         const splash = document.getElementById('splash-screen');
         splash.style.display = 'flex';
         splash.classList.remove('hidden');
-        setTimeout(() => splash.style.opacity = '1', 10);
+        safeSetTimeout(() => splash.style.opacity = '1', 10);
     } else if (target === 'welcome') {
         const welcome = document.getElementById('welcome-screen');
         welcome.style.display = 'block';
         welcome.classList.remove('hidden');
-        setTimeout(() => welcome.classList.add('show'), 10);
+        safeSetTimeout(() => welcome.classList.add('show'), 10);
     } else if (target === 'loading') {
         const loading = document.getElementById('loading-screen');
         loading.style.display = 'flex';
         loading.classList.remove('hidden');
-        setTimeout(() => loading.style.opacity = '1', 10);
+        safeSetTimeout(() => loading.style.opacity = '1', 10);
     } else if (target === 'category1') {
         showCategoryScreenDirect();
         const slider = document.querySelector('.category-slider-wrapper');
@@ -71,15 +90,18 @@ function debugJump(target) {
         if (slider) slider.scrollLeft = slider.clientWidth;
     } else if (target === 'premium') {
         showCategoryScreenDirect();
-        document.getElementById('premium-modal').classList.remove('hidden');
+        const premiumModal = document.getElementById('premium-modal');
+        if (premiumModal) premiumModal.classList.remove('hidden');
     }
 }
 
 function showCategoryScreenDirect() {
     const catScreen = document.getElementById('category-screen');
-    catScreen.style.display = 'block';
-    catScreen.classList.remove('hidden');
-    setTimeout(() => catScreen.classList.add('show'), 10);
+    if (catScreen) {
+        catScreen.style.display = 'block';
+        catScreen.classList.remove('hidden');
+        safeSetTimeout(() => catScreen.classList.add('show'), 10);
+    }
 }
 
 function debugToResult(cat) {
@@ -88,10 +110,13 @@ function debugToResult(cat) {
     selectedCategory = cat;
     
     const resultScreen = document.getElementById('result-screen');
-    resultScreen.style.display = 'block';
-    resultScreen.classList.remove('hidden');
-    document.getElementById('result-image').src = "images/result_" + cat + ".jpg";
-    setTimeout(() => resultScreen.classList.add('show'), 10);
+    if (resultScreen) {
+        resultScreen.style.display = 'block';
+        resultScreen.classList.remove('hidden');
+        const resultImg = document.getElementById('result-image');
+        if (resultImg) resultImg.src = "images/result_" + cat + ".jpg";
+        safeSetTimeout(() => resultScreen.classList.add('show'), 10);
+    }
 }
 // ────────────────────────────────────────
 
@@ -100,7 +125,7 @@ async function switchScreen(hideId, showId) {
         const hideEl = document.getElementById(hideId);
         if (hideEl) {
             hideEl.classList.remove('show');
-            await new Promise(r => setTimeout(r, 500));
+            await new Promise(r => safeSetTimeout(r, 500));
             hideEl.classList.add('hidden');
             hideEl.style.display = 'none';
         }
@@ -109,7 +134,7 @@ async function switchScreen(hideId, showId) {
     if (showEl) {
         showEl.style.display = 'block';
         showEl.classList.remove('hidden');
-        await new Promise(r => setTimeout(r, 10));
+        await new Promise(r => safeSetTimeout(r, 10));
         showEl.classList.add('show');
     }
 }
@@ -121,9 +146,13 @@ let currentIndex = 0;
 function showCategories() {
     // ③ ウェルカム画面で「はじめる」を押した時の正規の遷移
     const welcome = document.getElementById('welcome-screen');
-    if (welcome) welcome.classList.remove('show');
+    if (welcome) {
+        welcome.classList.remove('show');
+        welcome.classList.add('hidden');
+        welcome.style.display = 'none';
+    }
     
-    setTimeout(async () => {
+    safeSetTimeout(async () => {
         if (welcome) {
             welcome.classList.add('hidden');
             welcome.style.display = 'none';
@@ -134,13 +163,13 @@ function showCategories() {
         if (loading) {
             loading.style.display = 'flex';
             loading.classList.remove('hidden');
-            setTimeout(() => loading.style.opacity = '1', 10);
+            safeSetTimeout(() => loading.style.opacity = '1', 10);
         }
         
-        await new Promise(r => setTimeout(r, 4000));
+        await new Promise(r => safeSetTimeout(r, 4000));
         if (loading) loading.style.opacity = '0';
         
-        setTimeout(() => {
+        safeSetTimeout(() => {
             if (loading) {
                 loading.classList.add('hidden');
                 loading.style.display = 'none';
@@ -148,7 +177,7 @@ function showCategories() {
             // ⑤ カテゴリ選択画面を表示
             showCategoryScreenDirect();
         }, 500);
-    }, 500);
+    }, 10);
 }
 
 function goWelcome() { switchScreen('category-screen', 'welcome-screen'); }
@@ -170,43 +199,67 @@ function startQuiz(cat) {
 function proceedToQuiz() {
     if (!selectedCategory) return;
 
-    setTimeout(() => {
+    safeSetTimeout(() => {
         currentQuestions = quizData[selectedCategory];
         currentIndex = 0;
-        document.getElementById('category-screen').classList.remove('show');
-        setTimeout(() => {
+        const catScreen = document.getElementById('category-screen');
+        if (catScreen) catScreen.classList.remove('show');
+        
+        safeSetTimeout(() => {
             const cards = document.querySelectorAll('.card');
             cards.forEach(card => card.classList.remove('selected'));
             const continueBtn = document.getElementById('continue-btn');
             if (continueBtn) continueBtn.disabled = true;
 
-            document.getElementById('category-screen').classList.add('hidden');
-            document.getElementById('category-screen').style.display = 'none';
+            if (catScreen) {
+                catScreen.classList.add('hidden');
+                catScreen.style.display = 'none';
+            }
+            
+            const welcomeScreen = document.getElementById('welcome-screen');
+            if (welcomeScreen) {
+                welcomeScreen.style.display = 'none';
+                welcomeScreen.classList.remove('show');
+                welcomeScreen.classList.add('hidden');
+            }
             
             const quizScreen = document.getElementById('quiz-screen');
-            quizScreen.style.display = 'block';
-            quizScreen.classList.remove('hidden');
+            if (quizScreen) {
+                quizScreen.style.display = 'block';
+                quizScreen.classList.remove('hidden');
+            }
             
-            document.getElementById('interactive-area').classList.remove('hidden');
-            document.getElementById('feedback-area').classList.add('hidden');
-            document.getElementById('circle-path').style.animation = 'none';
-            document.getElementById('checkmark').style.opacity = '0';
-            document.getElementById('checkmark').classList.remove('show-check');
-            document.getElementById('next-btn-wrapper').style.opacity = '0';
-            document.getElementById('next-btn-wrapper').classList.remove('show-next');
+            const ia = document.getElementById('interactive-area');
+            if (ia) ia.classList.remove('hidden');
+            const fa = document.getElementById('feedback-area');
+            if (fa) fa.classList.add('hidden');
+            const cp = document.getElementById('circle-path');
+            if (cp) cp.style.animation = 'none';
+            const cm = document.getElementById('checkmark');
+            if (cm) {
+                cm.style.opacity = '0';
+                cm.classList.remove('show-check');
+            }
+            const nextWrapper = document.getElementById('next-btn-wrapper');
+            if (nextWrapper) {
+                nextWrapper.style.opacity = '0';
+                nextWrapper.classList.remove('show-next');
+            }
             
             const guideEl = document.getElementById('guide-text');
             if (guideEl) guideEl.style.display = "none";
 
             render();
-            setTimeout(() => quizScreen.classList.add('show'), 10);
+            if (quizScreen) safeSetTimeout(() => quizScreen.classList.add('show'), 10);
         }, 500);
-        document.getElementById('nav-category-title').innerText = selectedCategory;
+        const navTitle = document.getElementById('nav-category-title');
+        if (navTitle) navTitle.innerText = selectedCategory;
     }, 500);
 }
 
 function goBack() {
-    if (!document.getElementById('quiz-screen').classList.contains('hidden')) {
+    const quizScreen = document.getElementById('quiz-screen');
+    if (quizScreen && !quizScreen.classList.contains('hidden')) {
         switchScreen('quiz-screen', 'category-screen');
     } else {
         switchScreen('result-screen', 'category-screen');
@@ -238,128 +291,144 @@ function render() {
                 const allButtons = container.querySelectorAll('.option-btn');
                 allButtons.forEach(b => b.disabled = true);
                 
-                setTimeout(() => {
+                safeSetTimeout(() => {
                     allButtons.forEach(b => { b.classList.add('fade-out'); });
-                    setTimeout(() => {
+                    safeSetTimeout(() => {
                         container.classList.add('hidden');
                         const fa = document.getElementById('feedback-area');
-                        fa.classList.remove('hidden');
-                        document.getElementById('circle-path').style.animation = 'drawCircle 1.0s forwards linear';
+                        if (fa) fa.classList.remove('hidden');
+                        const cp = document.getElementById('circle-path');
+                        if (cp) cp.style.animation = 'drawCircle 1.0s forwards linear';
                         
-                        setTimeout(() => {
-                            document.getElementById('checkmark').classList.add('show-check');
+                        safeSetTimeout(() => {
+                            const cm = document.getElementById('checkmark');
+                            if (cm) cm.classList.add('show-check');
                             const guideEl = document.getElementById('guide-text');
                             if (guideEl && q.guide) {
                                 guideEl.innerText = q.guide;
                                 guideEl.style.opacity = "0";
                                 guideEl.style.display = "block";
                                 guideEl.style.transition = "opacity 1.0s ease-in-out";
-                                setTimeout(() => { guideEl.style.opacity = "1"; }, 10);
+                                safeSetTimeout(() => { guideEl.style.opacity = "1"; }, 10);
                             }
                             
-                            setTimeout(() => {
+                            safeSetTimeout(() => {
                                 const nextWrapper = document.getElementById('next-btn-wrapper');
-                                nextWrapper.innerHTML = '';
-                                const nextBtn = document.createElement('button');
-                                nextBtn.className = 'option-btn';
-                                nextBtn.innerText = '次へ';
-                                nextBtn.style.width = "100%";
-                                nextBtn.style.textAlign = "center"; 
-                                
-                                nextBtn.onclick = function() {
-                                    currentIndex++;
-                                    if (currentIndex < currentQuestions.length) {
-                                        fa.classList.add('hidden');
-                                        container.classList.remove('hidden');
-                                        document.getElementById('checkmark').classList.remove('show-check');
-                                        document.getElementById('next-btn-wrapper').classList.remove('show-next');
-                                        if (guideEl) guideEl.style.display = "none";
-                                        render();
-                                    } else {
-                                        showResult();
-                                    }
-                                };
-                                nextWrapper.appendChild(nextBtn);
-                                nextWrapper.classList.add('show-next');
+                                if (nextWrapper) {
+                                    nextWrapper.innerHTML = '';
+                                    const nextBtn = document.createElement('button');
+                                    nextBtn.className = 'option-btn';
+                                    nextBtn.innerText = '次へ';
+                                    nextBtn.style.width = "100%";
+                                    nextBtn.style.textAlign = "center"; 
+                                    
+                                    nextBtn.onclick = function() {
+    // 1. まず表示を完全にリセットする
+    const fa = document.getElementById('feedback-area');
+    const cm = document.getElementById('checkmark');
+    const nextWrapper = document.getElementById('next-btn-wrapper');
+    const guideEl = document.getElementById('guide-text');
+    const container = document.getElementById('options-container');
+
+    if (fa) fa.classList.add('hidden');
+    if (cm) cm.classList.remove('show-check');
+    if (nextWrapper) nextWrapper.classList.remove('show-next');
+    if (guideEl) guideEl.style.display = "none";
+    if (container) container.classList.remove('hidden');
+
+    // 2. インデックスを更新して次の問題を描画
+    currentIndex++;
+    if (currentIndex < currentQuestions.length) {
+        render();
+                                        } else {
+                                            showResult();
+                                        }
+                                    };
+                                    nextWrapper.appendChild(nextBtn);
+                                    nextWrapper.classList.add('show-next');
+                                }
                             }, 2000); 
                         }, 1000); 
                     }, 1200); 
                 }, 1000); 
             } else {
                 btn.classList.add('fade-out');
-                setTimeout(() => btn.remove(), 1200);
+                safeSetTimeout(() => btn.remove(), 1200);
             }
         };
         container.appendChild(btn);
     });
 }
+
 function showResult() {
-    document.getElementById('quiz-screen').classList.remove('show');
-    setTimeout(() => {
-        document.getElementById('quiz-screen').classList.add('hidden');
-        document.getElementById('quiz-screen').style.display = 'none';
-        
-        const resultScreen = document.getElementById('result-screen');
+    const quizScreen = document.getElementById('quiz-screen');
+    if (quizScreen) {
+        quizScreen.classList.remove('show');
+        safeSetTimeout(() => {
+            quizScreen.classList.add('hidden');
+            quizScreen.style.display = 'none';
+        }, 500);
+    }
+    
+    const resultScreen = document.getElementById('result-screen');
+    if (resultScreen) {
         resultScreen.style.display = 'block';
         resultScreen.classList.remove('hidden');
         
-        setTimeout(() => {
+        // 画面が表示されてから紙吹雪を飛ばす
+        safeSetTimeout(() => {
             resultScreen.classList.add('show');
             
             const container = document.getElementById('celebration-container');
             const medal = document.getElementById('result-medal');
             
             if (container) {
-                // 前回生成された紙吹雪のゴミ（div）だけをお掃除（メダル画像は残す）
+                // コンテナを確実に表示
+                container.style.display = 'flex';
+                
+                // 古いパーティクルを掃除
                 const oldConfetti = container.querySelectorAll('.confetti-particle');
                 oldConfetti.forEach(el => el.remove());
                 
-                // メダルを一旦初期化（隠す）
-                if (medal) {
-                    medal.style.transform = 'scale(0)';
-                    medal.style.opacity = '0';
-                }
-                
-                // ① 紙吹雪を一斉に「パンッ」と弾けさせる（さっきの消える仕様）
+                // 紙吹雪を生成
                 const particles = ['🎉', '✨', '🌸', '🟡', '🟩', '🟥', '🔵'];
                 for (let i = 0; i < 30; i++) {
                     const el = document.createElement('div');
                     el.className = 'confetti-particle';
                     el.innerText = particles[Math.floor(Math.random() * particles.length)];
                     
+                    // 初期状態をセット
                     el.style.position = 'absolute';
                     el.style.left = '50%';
                     el.style.top = '50%';
                     el.style.fontSize = Math.floor(Math.random() * 12 + 16) + 'px';
-                    el.style.transform = 'translate(-50%, -50%)';
-                    el.style.transition = 'all 0.8s cubic-bezier(0.25, 1, 0.5, 1)';
-                    el.style.opacity = '1';
+                    el.style.transition = 'all 1.0s ease-out'; // アニメーションを少し緩やかに
                     el.style.pointerEvents = 'none';
                     el.style.zIndex = '5';
                     
                     container.appendChild(el);
                     
+                    // 飛び散る計算
                     const angle = Math.random() * Math.PI * 2;
-                    const distance = Math.random() * 130 + 60; 
+                    const distance = Math.random() * 100 + 40;
                     const x = Math.cos(angle) * distance;
-                    const y = Math.sin(angle) * distance - 10; 
+                    const y = Math.sin(angle) * distance;
                     
-                    setTimeout(() => {
+                    // 少し遅れてアニメーション開始（これで確実に表示される）
+                    safeSetTimeout(() => {
                         el.style.transform = `translate(calc(-50% + ${x}px), calc(-50% + ${y}px)) rotate(${Math.random() * 360}deg)`;
-                        el.style.opacity = '0'; // 紙吹雪は綺麗に消える
-                    }, 10);
+                        el.style.opacity = '0';
+                    }, 50);
                 }
                 
-                // ② 紙吹雪が広がった一瞬あと（0.15秒後）にメダルをポンッと飛び出させて残す
+                // メダルを表示
                 if (medal) {
-                    setTimeout(() => {
-                        medal.style.opacity = '1';
-                        medal.style.transform = 'scale(1)'; // バウンドしながらきれいに残る
-                    }, 150);
+                    medal.style.opacity = '1';
+                    medal.style.transform = 'scale(1)';
                 }
             }
-        }, 10);
-    }, 500);
+        }, 300); // 300ms待つことで描画を確実に待機
+    }
 }
 
 function closePremiumModal() {
@@ -386,9 +455,8 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
-// ─── ⏩ クイズをスキップする関数（確認なしで即実行） ───
+
 function skipQuestion() {
-    // 1. 解説エリアや丸バツ表示がもし出ていたらきれいに隠す
     const fa = document.getElementById('feedback-area');
     if (fa) fa.classList.add('hidden');
     
@@ -401,14 +469,11 @@ function skipQuestion() {
     const guideEl = document.getElementById('guide-text');
     if (guideEl) guideEl.style.display = "none";
 
-    // 2. 次の問題へ進む
     currentIndex++;
     
     if (currentIndex < currentQuestions.length) {
-        // まだ次の問題がある場合は、次のクイズを画面に描画
         render();
     } else {
-        // これが最後の問題だった場合は、リザルト画面（結果画面）へ直行
         showResult();
     }
 }
